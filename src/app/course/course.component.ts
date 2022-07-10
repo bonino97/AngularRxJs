@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectionStrategy, Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { combineLatest, Observable } from "rxjs";
 import { map, tap, startWith } from "rxjs/operators";
@@ -17,6 +17,7 @@ interface CourseData {
   selector: "course",
   templateUrl: "./course.component.html",
   styleUrls: ["./course.component.css"],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CourseComponent implements OnInit {
   data$: Observable<CourseData>;
@@ -38,8 +39,7 @@ export class CourseComponent implements OnInit {
       .pipe(startWith([]));
 
     this.data$ = combineLatest([course$, lessons$]).pipe(
-      map(([course, lessons]) => ({ course, lessons })),
-      tap((data) => console.log(data))
+      map(([course, lessons]) => ({ course, lessons }))
     );
   }
 }
